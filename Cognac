@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Online Store App</title>
+</head>
+<body>
+	<h1>Online Store App</h1>
+	<div id="products"></div>
+	<button onclick="showCart()">View Cart</button>
+
+	<div id="cart" style="display: none;">
+		<h2>Shopping Cart</h2>
+		<ul id="cart-items"></ul>
+		<p>Total: $<span id="total"></span></p>
+		<button onclick="checkout()">Checkout</button>
+	</div>
+
+	<script>
+		// Define products
+		let products = [
+			{name: "Sebastian", price: 1599},
+			{name: "Dark Melody", price: 1699},
+			{name: "Schaffold", price: 1799},
+			{name: "Victor", price: 1699},
+			{name: "Wraith Daturas", price: 1499}
+		];
+
+		// Display products
+		let productsDiv = document.getElementById("products");
+		for (let i = 0; i < products.length; i++) {
+			let productDiv = document.createElement("div");
+			productDiv.innerHTML = "<h2>" + products[i].name + "</h2><p>$" + products[i].price + "</p><button onclick='addToCart(" + i + ")'>Add to Cart</button>";
+			productsDiv.appendChild(productDiv);
+		}
+
+		// Define cart
+		let cart = [];
+		let total = 0;
+
+		// Add item to cart
+		function addToCart(index) {
+			let item = products[index];
+			cart.push(item);
+			total += item.price;
+			updateCart();
+		}
+
+		// Update cart
+		function updateCart() {
+			let cartItemsDiv = document.getElementById("cart-items");
+			cartItemsDiv.innerHTML = "";
+			for (let i = 0; i < cart.length; i++) {
+				let cartItemDiv = document.createElement("li");
+				cartItemDiv.innerHTML = cart[i].name + " - $" + cart[i].price;
+				cartItemsDiv.appendChild(cartItemDiv);
+			}
+			let totalDiv = document.getElementById("total");
+			totalDiv.innerHTML = total;
+		}
+
+		// Show cart
+		function showCart() {
+			document.getElementById("products").style.display = "none";
+			document.getElementById("cart").style.display = "block";
+			updateCart();
+		}
+
+		// Checkout
+		function checkout() {
+			if (cart.length > 0) {
+				alert("Thank you for your purchase! Total: $" + total);
+				cart = [];
+				total = 0;
+				updateCart();
+				document.getElementById("products").style.display = "block";
+				document.getElementById("cart").style.display = "none";
+			} else {
+				alert("Your cart is empty. Please add items to your cart before checking out.");
+			}
+		}
+	</script>
+</body>
+</html>
